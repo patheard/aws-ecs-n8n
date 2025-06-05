@@ -1,0 +1,40 @@
+# Local .terraform directories
+**/.terraform/*
+
+# .tfstate files
+*.tfstate
+*.tfstate.*
+
+# Crash log files
+crash.log
+
+# Terragrunt cache directories
+**/.terragrunt-cache/*
+
+# Exclude all .tfvars files, which are likely to contain sensitive data
+*.tfvars
+*.tfvars.json
+
+# Ignore override files as they are usually used for local development
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Lock file
+.terraform.lock.hcl
+
+# Env files
+.env
+.env.local
+
+# Node modules
+node_modules/
+
+# Local data
+.n8n/
+*.sqlite
+*.db
+
+# OS specific
+.DS_Store
