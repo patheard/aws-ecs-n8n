@@ -1,16 +1,44 @@
 locals {
   container_env = [
     {
+      "name"  = "DB_POSTGRESDB_DATABASE"
+      "value" = "n8n"
+    },
+    {
+      "name"  = "DB_POSTGRESDB_PORT"
+      "value" = "5432"
+    },
+    {
+      "name"  = "DB_POSTGRESDB_SSL_ENABLED"
+      "value" = "true"
+    },
+    {
+      "name"  = "DB_TYPE"
+      "value" = "postgresdb"
+    },
+    {
+      "name"  = "N8N_DIAGNOSTICS_ENABLED"
+      "value" = "false"
+    },
+    {
       "name"  = "N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS"
       "value" = "true"
     },
     {
-      "name"  = "N8N_RUNNERS_ENABLED"
+      "name"  = "N8N_HIRING_BANNER_ENABLED"
+      "value" = "false"
+    },
+    {
+      "name"  = "N8N_HIDE_USAGE_PAGE"
       "value" = "true"
     },
     {
       "name"  = "N8N_HOST"
       "value" = var.domain
+    },
+    {
+      "name"  = "N8N_PERSONALIZATION_ENABLED"
+      "value" = "false"
     },
     {
       "name"  = "N8N_PORT"
@@ -21,62 +49,38 @@ locals {
       "value" = "http"
     },
     {
+      "name"  = "N8N_PROXY_HOPS"
+      "value" = "1"
+    },
+    {
+      "name"  = "N8N_RUNNERS_ENABLED"
+      "value" = "true"
+    },
+    {
       "name"  = "NODE_ENV"
       "value" = "production"
     },
     {
       "name"  = "WEBHOOK_URL"
       "value" = "https://${var.domain}/"
-    },
-    {
-      "name"  = "N8N_DIAGNOSTICS_ENABLED"
-      "value" = "false"
-    },
-    {
-      "name"  = "N8N_HIDE_USAGE_PAGE"
-      "value" = "true"
-    },
-    {
-      "name"  = "N8N_HIRING_BANNER_ENABLED"
-      "value" = "false"
-    },
-    {
-      "name"  = "N8N_PERSONALIZATION_ENABLED"
-      "value" = "false"
-    },
-    {
-      "name"  = "DB_TYPE"
-      "value" = "postgresdb"
-    },
-    {
-      "name"  = "DB_POSTGRESDB_PORT"
-      "value" = "5432"
-    },
-    {
-      "name"  = "DB_POSTGRESDB_DATABASE"
-      "value" = "n8n"
-    },
-    {
-      "name"  = "DB_POSTGRESDB_SSL_ENABLED"
-      "value" = "true"
     }
   ]
   container_secrets = [
     {
-      "name"      = "N8N_ENCRYPTION_KEY"
-      "valueFrom" = aws_ssm_parameter.n8n_encryption_key.arn
-    },
-    {
-      "name"      = "DB_POSTGRESDB_USER"
-      "valueFrom" = aws_ssm_parameter.n8n_database_username.arn
+      "name"      = "DB_POSTGRESDB_HOST"
+      "valueFrom" = aws_ssm_parameter.n8n_database_host.arn
     },
     {
       "name"      = "DB_POSTGRESDB_PASSWORD"
       "valueFrom" = aws_ssm_parameter.n8n_database_password.arn
     },
     {
-      "name"      = "DB_POSTGRESDB_HOST"
-      "valueFrom" = aws_ssm_parameter.n8n_database_host.arn
+      "name"      = "DB_POSTGRESDB_USER"
+      "valueFrom" = aws_ssm_parameter.n8n_database_username.arn
+    },
+    {
+      "name"      = "N8N_ENCRYPTION_KEY"
+      "valueFrom" = aws_ssm_parameter.n8n_encryption_key.arn
     },
   ]
 }
