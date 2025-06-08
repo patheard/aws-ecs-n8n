@@ -22,6 +22,29 @@ module "vpc" {
   billing_tag_value = var.billing_code
 }
 
+# Allow SMTPS traffic to AWS SES
+resource "aws_network_acl_rule" "allow_smtps_egress" {
+  network_acl_id = module.vpc.main_nacl_id
+  rule_number    = 100
+  egress         = true
+  protocol       = "tcp"
+  rule_action    = "allow"
+  cidr_block     = "0.0.0.0/0"
+  from_port      = 465
+  to_port        = 465
+}
+
+resource "aws_network_acl_rule" "allow_smtps_ingress" {
+  network_acl_id = module.vpc.main_nacl_id
+  rule_number    = 100
+  egress         = false
+  protocol       = "tcp"
+  rule_action    = "allow"
+  cidr_block     = "0.0.0.0/0"
+  from_port      = 465
+  to_port        = 465
+}
+
 #
 # Security groups
 #

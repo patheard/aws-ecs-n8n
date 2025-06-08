@@ -23,7 +23,7 @@ remote_state {
     bucket              = "${local.billing_code}-tf"
     use_lockfile        = true
     region              = local.vars.inputs.region
-    key                 = "./terraform.tfstate"
+    key                 = "terraform.tfstate"
     s3_bucket_tags      = { CostCentre : local.billing_code }
   }
 }

@@ -12,6 +12,7 @@ module "n8n_db" {
   instance_class = var.n8n_database_instance_class
   username       = var.n8n_database_username
   password       = var.n8n_database_password
+  use_proxy      = false
 
   backup_retention_period      = 14
   preferred_backup_window      = "02:00-04:00"
@@ -32,7 +33,7 @@ module "n8n_db" {
 resource "aws_ssm_parameter" "n8n_database_host" {
   name  = "n8n_database_host"
   type  = "SecureString"
-  value = module.n8n_db.proxy_endpoint
+  value = module.n8n_db.rds_cluster_endpoint
   tags  = local.common_tags
 }
 

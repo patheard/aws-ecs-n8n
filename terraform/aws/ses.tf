@@ -45,6 +45,11 @@ data "aws_iam_policy_document" "n8n_send_email" {
     resources = [
       aws_ses_domain_identity.n8n.arn
     ]
+    condition {
+      test     = "ForAllValues:StringLike"
+      variable = "ses:Recipients"
+      values   = ["*@cds-snc.ca"]
+    }
   }
 }
 

@@ -62,6 +62,18 @@ variable "n8n_database_password" {
   sensitive   = true
 }
 
+variable "n8n_smtp_pass" {
+  description = "SMTP password for n8n."
+  type        = string
+  sensitive   = true
+}
+
+variable "n8n_smtp_user" {
+  description = "SMTP user for n8n."
+  type        = string
+  sensitive   = true
+}
+
 variable "product_name" {
   description = "(Required) The name of the product you are deploying."
   type        = string

@@ -10,7 +10,7 @@ locals {
     },
     {
       "name"  = "DB_POSTGRESDB_SSL_ENABLED"
-      "value" = "true"
+      "value" = "false"
     },
     {
       "name"  = "DB_TYPE"
@@ -57,6 +57,26 @@ locals {
       "value" = "true"
     },
     {
+      "name"  = "N8N_EMAIL_MODE"
+      "value" = "smtp"
+    },
+    {
+      "name"  = "N8N_SMTP_HOST"
+      "value" = "email-smtp.${var.region}.amazonaws.com"
+    },
+    {
+      "name"  = "N8N_SMTP_PORT"
+      "value" = "465"
+    },
+    {
+      "name"  = "N8N_SMTP_SENDER"
+      "value" = "no-reply@${var.domain}"
+    },
+    {
+      "name"  = "N8N_SMTP_SSL"
+      "value" = "true"
+    },
+    {
       "name"  = "NODE_ENV"
       "value" = "production"
     },
@@ -81,6 +101,14 @@ locals {
     {
       "name"      = "N8N_ENCRYPTION_KEY"
       "valueFrom" = aws_ssm_parameter.n8n_encryption_key.arn
+    },
+    {
+      "name"      = "N8N_SMTP_PASS"
+      "valueFrom" = aws_ssm_parameter.n8n_smtp_pass.arn
+    },
+        {
+      "name"      = "N8N_SMTP_USER"
+      "valueFrom" = aws_ssm_parameter.n8n_smtp_user.arn
     },
   ]
 }
@@ -161,6 +189,8 @@ data "aws_iam_policy_document" "ecs_task_ssm_parameters" {
       aws_ssm_parameter.n8n_database_host.arn,
       aws_ssm_parameter.n8n_database_username.arn,
       aws_ssm_parameter.n8n_database_password.arn,
+      aws_ssm_parameter.n8n_smtp_pass.arn,
+      aws_ssm_parameter.n8n_smtp_user.arn,
     ]
   }
 }
@@ -186,5 +216,19 @@ resource "aws_ssm_parameter" "n8n_encryption_key" {
   name  = "n8n_encryption_key"
   type  = "SecureString"
   value = var.n8n_encryption_key
+  tags  = local.common_tags
+}
+
+resource "aws_ssm_parameter" "n8n_smtp_pass" {
+  name  = "n8n_smtp_pass"
+  type  = "SecureString"
+  value = var.n8n_smtp_pass
+  tags  = local.common_tags
+}
+
+resource "aws_ssm_parameter" "n8n_smtp_user" {
+  name  = "n8n_smtp_user"
+  type  = "SecureString"
+  value = var.n8n_smtp_user
   tags  = local.common_tags
 }
