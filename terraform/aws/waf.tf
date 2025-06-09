@@ -197,7 +197,7 @@ resource "aws_wafv2_web_acl" "n8n" {
 }
 
 resource "aws_wafv2_rule_group" "rate_limiters_group" {
-  capacity = 32
+  capacity = 64
   name     = "RateLimitersGroup"
   scope    = "REGIONAL"
 
@@ -257,6 +257,57 @@ resource "aws_wafv2_rule_group" "rate_limiters_group" {
       sampled_requests_enabled   = true
     }
   }
+
+  rule {
+    name     = "LoginLimit"
+    priority = 3
+
+    action {
+      block {}
+    }
+
+    statement {
+      rate_based_statement {
+        limit              = 10
+        aggregate_key_type = "IP"
+        scope_down_statement {
+          and_statement {
+            statement {
+              regex_match_statement {
+                field_to_match {
+                  method {}
+                }
+                regex_string = "^(put|post)$"
+                text_transformation {
+                  priority = 1
+                  type     = "LOWERCASE"
+                }
+              }
+            }
+            statement {
+              regex_match_statement {
+                field_to_match {
+                  uri_path {}
+                }
+                regex_string = "^/rest/(login|forgot-password)$"
+                text_transformation {
+                  priority = 1
+                  type     = "LOWERCASE"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+    visibility_config {
+      cloudwatch_metrics_enabled = true
+      metric_name                = "PostRequestRateLimit"
+      sampled_requests_enabled   = true
+    }
+  }
+
   visibility_config {
     cloudwatch_metrics_enabled = true
     metric_name                = "RateLimitersGroup"
